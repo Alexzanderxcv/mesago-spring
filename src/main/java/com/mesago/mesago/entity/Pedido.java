@@ -30,7 +30,7 @@ public class Pedido {
     private BigDecimal total;
 
     @Column(name = "tiempo_preparado")
-    private Integer tiempoPreparado; // en minutos
+    private Integer tiempoPreparado;
 
     @ManyToOne
     @JoinColumn(name = "id_trabajador", nullable = false)
