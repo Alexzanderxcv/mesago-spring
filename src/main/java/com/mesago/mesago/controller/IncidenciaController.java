@@ -1,9 +1,8 @@
 package com.mesago.mesago.controller;
 
-
-import com.mesago.mesago.dto.pedido.PedidoRequestDto;
-import com.mesago.mesago.dto.pedido.PedidoResponseDto;
-import com.mesago.mesago.service.PedidoService;
+import com.mesago.mesago.dto.incidencia.IncidenciaRequestDto;
+import com.mesago.mesago.dto.incidencia.IncidenciaResponseDto;
+import com.mesago.mesago.service.IncidenciaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -12,33 +11,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pedidos")
+@RequestMapping("/api/incidencias")
 @RequiredArgsConstructor
-public class PedidoController {
+public class IncidenciaController {
 
-    private final PedidoService service;
+    private final IncidenciaService service;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PedidoResponseDto crear(@Validated @RequestBody PedidoRequestDto req) {
+    public IncidenciaResponseDto crear(@Validated @RequestBody IncidenciaRequestDto req) {
         return service.crear(req);
     }
 
     @GetMapping("/{id}")
-    public PedidoResponseDto obtener(@PathVariable Long id) {
-
+    public IncidenciaResponseDto obtener(@PathVariable Long id) {
         return service.obtenerPorId(id);
     }
 
     @GetMapping
-    public List<PedidoResponseDto> listar() {
+    public List<IncidenciaResponseDto> listar() {
         return service.listarTodos();
     }
 
     @PutMapping("/{id}")
-    public PedidoResponseDto actualizar(
+    public IncidenciaResponseDto actualizar(
             @PathVariable Long id,
-            @Validated @RequestBody PedidoRequestDto req
+            @Validated @RequestBody IncidenciaRequestDto req
     ) {
         return service.actualizar(id, req);
     }
