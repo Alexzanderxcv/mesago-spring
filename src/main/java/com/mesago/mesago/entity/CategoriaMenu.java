@@ -17,9 +17,9 @@ public class CategoriaMenu {
     @Column(name = "id_categoria_menu")
     private Long id;
 
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(nullable = false, length = 255)
+    @Column(length = 255)
     private String descripcion;
 }

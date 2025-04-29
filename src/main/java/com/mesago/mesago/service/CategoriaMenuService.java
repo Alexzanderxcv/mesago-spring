@@ -1,15 +1,21 @@
 package com.mesago.mesago.service;
 
 
-import com.mesago.mesago.dto.categoriaMenu.CategoriaMenuRequestDTO;
-import com.mesago.mesago.dto.categoriaMenu.CategoriaMenuResponseDTO;
+import com.mesago.mesago.dto.categoriaMenu.CategoriaMenuRequestDto;
+import com.mesago.mesago.dto.categoriaMenu.CategoriaMenuResponseDto;
 
 import java.util.List;
 
 public interface CategoriaMenuService {
-    List<CategoriaMenuResponseDTO> listar();
-    CategoriaMenuResponseDTO guardar(CategoriaMenuRequestDTO requestDTO);
-    CategoriaMenuResponseDTO obtenerPorId(Long id);
+
+    CategoriaMenuResponseDto crear(CategoriaMenuRequestDto request);
+
+    CategoriaMenuResponseDto obtenerPorId(Long id);
+
+    List<CategoriaMenuResponseDto> listarTodas();
+
+    CategoriaMenuResponseDto actualizar(Long id, CategoriaMenuRequestDto request);
+
     void eliminar(Long id);
 
 }
