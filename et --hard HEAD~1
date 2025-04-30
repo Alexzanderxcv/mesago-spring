@@ -1,0 +1,60 @@
+[33mcommit 356705d3c162090922c4f87dda9a94c0a476236a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Merge: d88dcd2 6e2fd16
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Tue Apr 29 20:48:58 2025 -0500
+
+    Codigo - Trabajador, Mesa, rol, Menu, DetallePedido
+
+[33mcommit d88dcd2ad26601868aff885122ee4e5303c1e17f[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Tue Apr 29 20:34:56 2025 -0500
+
+    Codigo de negocio para Menu, Mesa, rol, Trabajador
+
+[33mcommit 6e2fd16ddce97707f38b0c08d158c6f91a998940[m
+Author: Alexander <aletlmt555@gmail.com>
+Date:   Tue Apr 29 18:01:41 2025 -0500
+
+    feat: avances en incidencia - controller, service, mapper, etc
+
+[33mcommit ff8ae57263ab367b73ea9bf7aa6b6568b5a00bdd[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Mon Apr 28 20:16:44 2025 -0500
+
+    Crea todo el codigo de pedido
+
+[33mcommit d3f297ae8877cf4bfc56d3aab4eb89150c1421fc[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Mon Apr 28 19:55:21 2025 -0500
+
+    Crea todo el codigo de Cliente
+
+[33mcommit fd210b1b4f15172af6013da3b7af2d3cf79e6605[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Mon Apr 28 19:21:21 2025 -0500
+
+    Se crea el paquete config para la conexion con el frotend
+
+[33mcommit 3477f643db7f2ff60229870286f6e1b9766ccfea[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Mon Apr 28 19:00:47 2025 -0500
+
+    se crea todo el codigo de CategoriaMenu
+
+[33mcommit a1bdec296b1d33b04ba1da631ac6123d093598d4[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Mon Apr 28 12:46:46 2025 -0500
+
+    hace implementación del login
+
+[33mcommit 589346ac73def9da330ba1cc1637bca9966e3af2[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Wed Apr 23 19:42:51 2025 -0500
+
+    mapea las tablas a todas las entidades
+
+[33mcommit 970c9321b271bfd0c512211cb5be8495b8760daf[m
+Author: Carlos A <i202225428@cibertec.edu.pe>
+Date:   Sat Apr 19 23:43:54 2025 -0500
+
+    Inicialización del proyecto: estructura base y definición de entidades principales
