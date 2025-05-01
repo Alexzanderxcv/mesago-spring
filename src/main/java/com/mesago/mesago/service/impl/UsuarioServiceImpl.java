@@ -1,0 +1,63 @@
+package com.mesago.mesago.service.impl;
+
+import com.mesago.mesago.dto.usuario.UsuarioRequestDto;
+import com.mesago.mesago.dto.usuario.UsuarioResponseDto;
+import com.mesago.mesago.entity.Usuario;
+import com.mesago.mesago.mapper.usuario.UsuarioMapper;
+import com.mesago.mesago.repository.UsuarioRepository;
+import com.mesago.mesago.service.UsuarioService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class UsuarioServiceImpl implements UsuarioService {
+
+    private final UsuarioRepository repository;
+    private final UsuarioMapper mapper;
+
+    @Override
+    public UsuarioResponseDto crear(UsuarioRequestDto dto) {
+        if (repository.existsByUsername(dto.getUsername())) {
+            throw new IllegalArgumentException("Username ya existe: " + dto.getUsername());
+        }
+        Usuario entidad = mapper.toEntity(dto);
+        Usuario saved = repository.save(entidad);
+        return mapper.toResponseDto(saved);
+    }
+
+    @Override
+    public UsuarioResponseDto obtenerPorId(Long id) {
+        Usuario entidad = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado: " + id));
+        return mapper.toResponseDto(entidad);
+    }
+
+    @Override
+    public List<UsuarioResponseDto> listarTodos() {
+        return repository.findAll().stream()
+                .map(mapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UsuarioResponseDto actualizar(Long id, UsuarioRequestDto dto) {
+        Usuario entidad = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado: " + id));
+        mapper.updateEntityFromDto(dto, entidad);
+        Usuario updated = repository.save(entidad);
+        return mapper.toResponseDto(updated);
+    }
+
+    @Override
+    public void eliminar(Long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Usuario no encontrado: " + id);
+        }
+        repository.deleteById(id);
+    }
+}
