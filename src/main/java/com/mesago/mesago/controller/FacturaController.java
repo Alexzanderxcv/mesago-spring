@@ -1,9 +1,9 @@
 package com.mesago.mesago.controller;
 
 
-import com.mesago.mesago.dto.pedido.PedidoRequestDto;
-import com.mesago.mesago.dto.pedido.PedidoResponseDto;
-import com.mesago.mesago.service.PedidoService;
+import com.mesago.mesago.dto.factura.FacturaRequestDto;
+import com.mesago.mesago.dto.factura.FacturaResponseDto;
+import com.mesago.mesago.service.FacturaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -12,33 +12,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pedidos")
+@RequestMapping("/api/facturas")
 @RequiredArgsConstructor
-public class PedidoController {
+public class FacturaController {
 
-    private final PedidoService service;
+    private final FacturaService service;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PedidoResponseDto crear(@Validated @RequestBody PedidoRequestDto req) {
+    public FacturaResponseDto crear(@Validated @RequestBody FacturaRequestDto req) {
+
         return service.crear(req);
     }
 
     @GetMapping("/{id}")
-    public PedidoResponseDto obtener(@PathVariable Long id) {
-
+    public FacturaResponseDto obtener(@PathVariable Long id){
         return service.obtenerPorId(id);
     }
 
     @GetMapping
-    public List<PedidoResponseDto> listar() {
+    public List<FacturaResponseDto> listar() {
         return service.listarTodos();
     }
 
     @PutMapping("/{id}")
-    public PedidoResponseDto actualizar(
+    public FacturaResponseDto actualizar(
             @PathVariable Long id,
-            @Validated @RequestBody PedidoRequestDto req
+            @Validated @RequestBody FacturaRequestDto req
     ) {
         return service.actualizar(id, req);
     }
@@ -48,4 +48,5 @@ public class PedidoController {
     public void eliminar(@PathVariable Long id) {
         service.eliminar(id);
     }
+
 }
