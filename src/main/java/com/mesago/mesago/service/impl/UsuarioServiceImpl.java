@@ -8,6 +8,7 @@ import com.mesago.mesago.repository.UsuarioRepository;
 import com.mesago.mesago.service.UsuarioService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,15 +20,23 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository repository;
     private final UsuarioMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UsuarioResponseDto crear(UsuarioRequestDto dto) {
         if (repository.existsByUsername(dto.getUsername())) {
             throw new IllegalArgumentException("Username ya existe: " + dto.getUsername());
         }
+        // 1) Cifrar la contraseña en el DTO
+        String raw = dto.getPassword();
+        String hashed = passwordEncoder.encode(raw);
+        dto.setPassword(hashed);
+
+        // 2) Mapear y guardar
         Usuario entidad = mapper.toEntity(dto);
         Usuario saved = repository.save(entidad);
         return mapper.toResponseDto(saved);
+
     }
 
     @Override
