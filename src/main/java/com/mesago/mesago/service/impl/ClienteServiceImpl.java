@@ -51,6 +51,13 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public ClienteResponseDto obtenerPorNombre(String nombre) {
+        Cliente entity = repository.findByNombre(nombre)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado: " + nombre));
+        return mapper.toResponseDto(entity);
+    }
+
+    @Override
     public void eliminar(Long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Cliente no encontrado: " + id);

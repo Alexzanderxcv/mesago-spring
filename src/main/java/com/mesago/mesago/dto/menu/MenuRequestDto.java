@@ -13,15 +13,9 @@ import java.math.BigDecimal;
 public class MenuRequestDto {
 
     private String nombre;
-
     private String descripcion;
-
     private BigDecimal precio;
-
     private Integer stock;
-
     private String estado;
-
     private Long idCategoria;
-
 }

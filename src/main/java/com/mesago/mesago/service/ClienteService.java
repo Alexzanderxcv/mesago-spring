@@ -15,5 +15,7 @@ public interface ClienteService {
 
     ClienteResponseDto actualizar(Long id, ClienteRequestDto request);
 
+    ClienteResponseDto obtenerPorNombre(String nombre);
+
     void eliminar(Long id);
 }

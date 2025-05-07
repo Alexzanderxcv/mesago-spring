@@ -11,5 +11,6 @@ public interface MenuService {
     MenuResponseDto obtenerPorId(Long id);
     List<MenuResponseDto> listarTodos();
     MenuResponseDto actualizar(Long id, MenuRequestDto dto);
+    List<MenuResponseDto> obtenerPorCategoria(String nombre);
     void eliminar(Long id);
 }

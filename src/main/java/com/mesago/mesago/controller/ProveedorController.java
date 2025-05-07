@@ -8,40 +8,78 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/proveedores")
+@Controller
+@RequestMapping("/admin/proveedores")
 @RequiredArgsConstructor
 public class ProveedorController {
 
-    private final ProveedorService service;
-
-    @PostMapping
-    public ProveedorResponseDto crear(@Valid @RequestBody ProveedorRequestDto dto) {
-        return service.crear(dto);
-    }
+    private final ProveedorService proveedorService;
 
     @GetMapping
-    public Page<ProveedorResponseDto> listar(Pageable pageable) {
-        return service.listar(pageable);
+    public String listar(Model model) {
+        model.addAttribute("proveedores", proveedorService.listar(Pageable.unpaged()).getContent());
+        return "proveedores/lista";
     }
 
-
-    @GetMapping("/{id}")
-    public ProveedorResponseDto obtener(@PathVariable Long id) {
-        return service.obtenerPorId(id);
+    @GetMapping("/crear")
+    public String mostrarFormularioCrear() {
+        return "proveedores/crear";
     }
 
-    @PutMapping("/{id}")
-    public ProveedorResponseDto actualizar(@PathVariable Long id, @Valid @RequestBody ProveedorRequestDto dto) {
-        return service.actualizar(id, dto);
+    @PostMapping
+    public String crear(
+            @RequestParam String ruc,
+            @RequestParam String nombre,
+            @RequestParam(required = false) String direccion,
+            @RequestParam(required = false) String telefono,
+            @RequestParam(required = false) String estado) {
+
+        ProveedorRequestDto dto = new ProveedorRequestDto();
+        dto.setRuc(ruc);
+        dto.setNombre(nombre);
+        dto.setDireccion(direccion);
+        dto.setTelefono(telefono);
+        dto.setEstado(estado);
+
+        proveedorService.crear(dto);
+        return "redirect:/admin/proveedores";
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    @GetMapping("/editar/{id}")
+    public String mostrarEditar(@PathVariable Long id, Model model) {
+        model.addAttribute("proveedor", proveedorService.obtenerPorId(id));
+        return "proveedores/editar";
+    }
+
+    @PostMapping("/{id}")
+    public String actualizar(
+            @PathVariable Long id,
+            @RequestParam String ruc,
+            @RequestParam String nombre,
+            @RequestParam(required = false) String direccion,
+            @RequestParam(required = false) String telefono,
+            @RequestParam(required = false) String estado) {
+
+        ProveedorRequestDto dto = new ProveedorRequestDto();
+        dto.setRuc(ruc);
+        dto.setNombre(nombre);
+        dto.setDireccion(direccion);
+        dto.setTelefono(telefono);
+        dto.setEstado(estado);
+
+        proveedorService.actualizar(id, dto);
+        return "redirect:/admin/proveedores";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        proveedorService.eliminar(id);
+        return "redirect:/admin/proveedores";
     }
 }

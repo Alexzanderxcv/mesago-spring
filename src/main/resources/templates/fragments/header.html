@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div th:fragment="header">
+    <div class="topbar">
+        <div class="fw-semibold fs-5 d-flex align-items-center">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            Panel de Administración
+        </div>
+        <div>
+            <i class="bi bi-bell-fill me-3"></i>
+            <i class="bi bi-person-circle fs-4"></i>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,51 +1,61 @@
 package com.mesago.mesago.controller;
 
-import com.mesago.mesago.dto.categoriaMenu.CategoriaMenuRequestDto;
-import com.mesago.mesago.dto.categoriaMenu.CategoriaMenuResponseDto;
-import com.mesago.mesago.repository.CategoriaMenuRepository;
+import com.mesago.mesago.dto.categoriaMenu.*;
 import com.mesago.mesago.service.CategoriaMenuService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
+@RequestMapping("/admin/categoria")
 @RequiredArgsConstructor
-@RequestMapping("/api/categoriaMenu")
 public class CategoriaMenuController {
 
-    private final CategoriaMenuService service;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CategoriaMenuResponseDto crear(@Validated @RequestBody CategoriaMenuRequestDto req) {
-        return service.crear(req);
-    }
-
-    @GetMapping("/{id}")
-    public CategoriaMenuResponseDto obtener(@PathVariable Long id) {
-        return service.obtenerPorId(id);
-    }
+    private final CategoriaMenuService categoriaMenuService;
 
     @GetMapping
-    public List<CategoriaMenuResponseDto> listar() {
-        return service.listarTodas();
+    public String listar(Model model) {
+        List<CategoriaMenuResponseDto> categorias = categoriaMenuService.listarTodas();
+        model.addAttribute("categorias", categorias);
+        return "categoria/lista";
     }
 
-    @PutMapping("/{id}")
-    public CategoriaMenuResponseDto actualizar(
-            @PathVariable Long id,
-            @Validated @RequestBody CategoriaMenuRequestDto req
-    ) {
-        return service.actualizar(id, req);
+    @GetMapping("/crear")
+    public String mostrarFormularioCrear() {
+        return "categoria/crear";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    @PostMapping
+    public String crear(@RequestParam String nombre,
+                        @RequestParam(required = false) String descripcion) {
+        CategoriaMenuRequestDto dto = new CategoriaMenuRequestDto(nombre, descripcion);
+        categoriaMenuService.crear(dto);
+        return "redirect:/admin/categoria";
     }
 
+    @GetMapping("/editar/{id}")
+    public String mostrarEditar(@PathVariable Long id, Model model) {
+        CategoriaMenuResponseDto dto = categoriaMenuService.obtenerPorId(id);
+        model.addAttribute("categoria", dto);
+        return "categoria/editar";
+    }
+
+    @PostMapping("/{id}")
+    public String actualizar(@PathVariable Long id,
+                             @RequestParam String nombre,
+                             @RequestParam(required = false) String descripcion) {
+        CategoriaMenuRequestDto dto = new CategoriaMenuRequestDto(nombre, descripcion);
+        categoriaMenuService.actualizar(id, dto);
+        return "redirect:/admin/categoria";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        categoriaMenuService.eliminar(id);
+        return "redirect:/admin/categoria";
+    }
 }

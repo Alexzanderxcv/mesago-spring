@@ -5,39 +5,76 @@ import com.mesago.mesago.dto.insumo.InsumoResponseDto;
 import com.mesago.mesago.service.InsumoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/insumos")
+@Controller
+@RequestMapping("/admin/insumos")
 @RequiredArgsConstructor
 public class InsumoController {
 
-    private final InsumoService service;
-
-    @PostMapping
-    public InsumoResponseDto crear(@Valid @RequestBody InsumoRequestDto dto) {
-        return service.crear(dto);
-    }
+    private final InsumoService insumoService;
 
     @GetMapping
-    public List<InsumoResponseDto> listar() {
-        return service.listar();
+    public String listar(Model model) {
+        model.addAttribute("insumos", insumoService.listar());
+        return "insumos/lista";
     }
 
-    @GetMapping("/{id}")
-    public InsumoResponseDto obtener(@PathVariable Long id) {
-        return service.obtenerPorId(id);
+    @GetMapping("/crear")
+    public String mostrarFormularioCrear() {
+        return "insumos/crear";
     }
 
-    @PutMapping("/{id}")
-    public InsumoResponseDto actualizar(@PathVariable Long id, @Valid @RequestBody InsumoRequestDto dto) {
-        return service.actualizar(id, dto);
+    @PostMapping
+    public String crear(
+            @RequestParam String nombre,
+            @RequestParam String unidadMedida,
+            @RequestParam Integer stock,
+            @RequestParam Integer stockMinimo,
+            @RequestParam String estado
+    ) {
+        InsumoRequestDto dto = new InsumoRequestDto();
+        dto.setNombre(nombre);
+        dto.setUnidadMedida(unidadMedida);
+        dto.setStock(stock);
+        dto.setStockMinimo(stockMinimo);
+        dto.setEstado(estado);
+        insumoService.crear(dto);
+        return "redirect:/admin/insumos";
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        model.addAttribute("insumo", insumoService.obtenerPorId(id));
+        return "insumos/editar";
+    }
+
+    @PostMapping("/{id}")
+    public String actualizar(
+            @PathVariable Long id,
+            @RequestParam String nombre,
+            @RequestParam String unidadMedida,
+            @RequestParam Integer stock,
+            @RequestParam Integer stockMinimo,
+            @RequestParam String estado
+    ) {
+        InsumoRequestDto dto = new InsumoRequestDto();
+        dto.setNombre(nombre);
+        dto.setUnidadMedida(unidadMedida);
+        dto.setStock(stock);
+        dto.setStockMinimo(stockMinimo);
+        dto.setEstado(estado);
+        insumoService.actualizar(id, dto);
+        return "redirect:/admin/insumos";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        insumoService.eliminar(id);
+        return "redirect:/admin/insumos";
     }
 }

@@ -2,6 +2,7 @@ package com.mesago.mesago.service.impl;
 
 import com.mesago.mesago.dto.menu.MenuRequestDto;
 import com.mesago.mesago.dto.menu.MenuResponseDto;
+import com.mesago.mesago.entity.Cliente;
 import com.mesago.mesago.entity.Menu;
 import com.mesago.mesago.mapper.menu.MenuMapper;
 import com.mesago.mesago.repository.MenuRepository;
@@ -46,6 +47,15 @@ public class MenuServiceImpl implements MenuService {
                 .orElseThrow(() -> new EntityNotFoundException("Menú no encontrado: " + id));
         mapper.updateEntity(dto, menu);
         return mapper.toResponseDto(repository.save(menu));
+    }
+
+    @Override
+    public List<MenuResponseDto> obtenerPorCategoria(String nombre) {
+        List<Menu> menus = repository.findByCategoriaNombre(nombre);
+        if (menus.isEmpty()) {
+            throw new EntityNotFoundException("No se encontraron menús con la categoría: " + nombre);
+        }
+        return menus.stream().map(mapper::toResponseDto).toList();
     }
 
     @Override

@@ -47,4 +47,9 @@ public class ClienteController {
         service.eliminar(id);
     }
 
+    @GetMapping("/nombre/{nombre}")
+    public ClienteResponseDto obtenerPorNombre(@PathVariable String nombre){
+        return service.obtenerPorNombre(nombre);
+    }
+
 }

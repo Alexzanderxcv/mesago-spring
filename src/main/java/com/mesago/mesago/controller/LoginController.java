@@ -1,24 +1,26 @@
 package com.mesago.mesago.controller;
 
-import com.mesago.mesago.dto.login.LoginRequestDto;
-import com.mesago.mesago.dto.login.LoginResponseDto;
-import com.mesago.mesago.service.AuthService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController
-@RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
-@RequiredArgsConstructor
+@Controller
 public class LoginController {
 
-    private final AuthService authService;
+    @GetMapping("/login")
+    public String mostrarLoginForm() {
+        return "login"; // Renderiza login.html
+    }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
-        LoginResponseDto responseDto = authService.login(request);
-        return ResponseEntity.ok(responseDto);
+    @GetMapping("/admin")
+    public String mostrarVistaAdmin(Model model) {
+        model.addAttribute("title", "Panel de Administración");
+        return "admin"; // Renderiza admin.html
+    }
+
+    @GetMapping("/empleado")
+    public String mostrarVistaEmpleado(Model model) {
+        model.addAttribute("title", "Panel de Empleado");
+        return "empleado"; // Renderiza empleado.html
     }
 }
