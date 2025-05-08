@@ -24,6 +24,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioResponseDto crear(UsuarioRequestDto dto) {
+        if (repository.existsByTrabajadorId(dto.getIdTrabajador())) {
+            throw new IllegalArgumentException("Este trabajador ya tiene un usuario asignado.");
+        }
+
         if (repository.existsByUsername(dto.getUsername())) {
             throw new IllegalArgumentException("Username ya existe: " + dto.getUsername());
         }
@@ -60,6 +64,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         mapper.updateEntityFromDto(dto, entidad);
         Usuario updated = repository.save(entidad);
         return mapper.toResponseDto(updated);
+    }
+    @Override
+    public void resetearPassword(Long id) {
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado: " + id));
+
+        String nuevaClave = "mesa2025"; // puedes hacer esto dinámico o configurable si quieres
+        String claveEncriptada = passwordEncoder.encode(nuevaClave);
+
+        usuario.setPassword(claveEncriptada);
+        repository.save(usuario);
     }
 
     @Override

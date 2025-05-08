@@ -4,11 +4,23 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/layout}">
 <head>
+</head>
 <body class="bg-light">
 
 <div layout:fragment="content">
 
   <h2 class="mb-4 text-center">Gestión de Proveedores</h2>
+
+  <!-- Select de tamaño de página -->
+  <form method="get" th:action="@{/admin/proveedores}" class="mb-3 d-flex justify-content-end align-items-center">
+    <label for="sizeSelect" class="me-2">Mostrar:</label>
+    <select id="sizeSelect" name="size" class="form-select w-auto me-2" onchange="this.form.submit()">
+      <option th:value="5" th:selected="${size == 5}">5</option>
+      <option th:value="10" th:selected="${size == 10}">10</option>
+      <option th:value="15" th:selected="${size == 15}">15</option>
+    </select>
+    <input type="hidden" name="page" th:value="${paginaActual}">
+  </form>
 
   <div class="mb-3 text-end">
     <a th:href="@{/admin/proveedores/crear}" class="btn btn-success">+ Nuevo Proveedor</a>
@@ -27,7 +39,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="p : ${proveedores}">
+    <tr th:each="p : ${proveedoresPage.content}">
       <td th:text="${p.id}"></td>
       <td th:text="${p.ruc}"></td>
       <td th:text="${p.nombre}"></td>
@@ -42,8 +54,33 @@
     </tr>
     </tbody>
   </table>
-  <a th:href="@{/admin}" class="btn btn-secondary mt-3">← Volver al Panel</a>
 
+  <!-- Paginador -->
+  <div class="d-flex justify-content-center mt-4">
+    <nav th:if="${totalPaginas > 1}">
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${paginaActual == 0} ? 'disabled'">
+          <a class="page-link"
+             th:href="@{/admin/proveedores(page=${paginaActual - 1}, size=${size})}">Anterior</a>
+        </li>
+
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(0, totalPaginas - 1)}"
+            th:classappend="${i == paginaActual} ? 'active'">
+          <a class="page-link"
+             th:href="@{/admin/proveedores(page=${i}, size=${size})}"
+             th:text="${i + 1}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${paginaActual == totalPaginas - 1} ? 'disabled'">
+          <a class="page-link"
+             th:href="@{/admin/proveedores(page=${paginaActual + 1}, size=${size})}">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <a th:href="@{/admin}" class="btn btn-secondary mt-3">← Volver al Panel</a>
 </div>
 
 </body>

@@ -1,8 +1,6 @@
 package com.mesago.mesago.controller;
 
-import com.mesago.mesago.service.InsumoService;
-import com.mesago.mesago.service.MenuService;
-import com.mesago.mesago.service.ProveedorService;
+import com.mesago.mesago.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +14,12 @@ public class LoginController {
     private final InsumoService insumoService;
     private final ProveedorService proveedorService;
     private final MenuService menuService;
+
+    private final PedidoService pedidoService;
+    private final ReservaService reservaService;
+    private final MesaService mesaService;
+    private final FacturaService facturaService;
+    private final ClienteService clienteService;
 
     @GetMapping("/login")
     public String mostrarLoginForm() {
@@ -36,6 +40,8 @@ public class LoginController {
     @GetMapping("/empleado")
     public String mostrarVistaEmpleado(Model model) {
         model.addAttribute("title", "Panel de Empleado");
+
+        model.addAttribute("totalCliente", clienteService.count());
         return "empleado"; // Renderiza empleado.html
     }
 }

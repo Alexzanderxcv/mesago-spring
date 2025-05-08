@@ -1,9 +1,29 @@
-<!-- empleado.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Empleado</title></head>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments-empleado/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Empleado</title>
+</head>
 <body>
-<h1>Bienvenido, Empleado</h1>
-<a th:href="@{/logout}">Cerrar sesión</a>
+
+<div layout:fragment="content">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <div>Clientes</div>
+                        <h4 class="mb-0" th:text="${totalCliente}">0</h4>
+                    </div>
+                    <i class="bi bi-person-fill fs-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

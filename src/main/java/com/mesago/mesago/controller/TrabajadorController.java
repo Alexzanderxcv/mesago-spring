@@ -1,47 +1,97 @@
 package com.mesago.mesago.controller;
 
-
 import com.mesago.mesago.dto.trabajador.TrabajadorRequestDto;
-import com.mesago.mesago.dto.trabajador.TrabajadorResponseDto;
+import com.mesago.mesago.service.RolService;
 import com.mesago.mesago.service.TrabajadorService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.time.LocalDate;
 
-@RestController
-@RequestMapping("/api/trabajadores")
+@Controller
+@RequestMapping("/admin/trabajadores")
 @RequiredArgsConstructor
 public class TrabajadorController {
 
     private final TrabajadorService service;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public TrabajadorResponseDto crear(@Valid @RequestBody TrabajadorRequestDto dto) {
-        return service.crear(dto);
-    }
-
-    @GetMapping("/{id}")
-    public TrabajadorResponseDto obtener(@PathVariable Long id) {
-        return service.obtenerPorId(id);
-    }
+    private final RolService rolService;
 
     @GetMapping
-    public List<TrabajadorResponseDto> listar() {
-        return service.listar();
+    public String listar(Model model) {
+        model.addAttribute("trabajadores", service.listar());
+        return "trabajadores/lista";
     }
 
-    @PutMapping("/{id}")
-    public TrabajadorResponseDto actualizar(@PathVariable Long id, @Valid @RequestBody TrabajadorRequestDto dto) {
-        return service.actualizar(id, dto);
+    @GetMapping("/crear")
+    public String mostrarFormularioCrear(Model model) {
+        model.addAttribute("roles", rolService.listarTodos());
+        return "trabajadores/crear";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminar(@PathVariable Long id) {
+    @PostMapping
+    public String crear(
+            @RequestParam String nombre,
+            @RequestParam String dni,
+            @RequestParam String telefono,
+            @RequestParam String email,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaIngreso,
+            @RequestParam String turno,
+            @RequestParam(required = false) String estado,
+            @RequestParam Long idRol
+    ) {
+        TrabajadorRequestDto dto = new TrabajadorRequestDto();
+        dto.setNombre(nombre);
+        dto.setDni(dni);
+        dto.setTelefono(telefono);
+        dto.setEmail(email);
+        dto.setFechaIngreso(fechaIngreso);
+        dto.setTurno(turno);
+        dto.setEstado(estado);
+        dto.setIdRol(idRol);
+
+        service.crear(dto);
+        return "redirect:/admin/trabajadores";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarEditar(@PathVariable Long id, Model model) {
+        model.addAttribute("trabajador", service.obtenerPorId(id));
+        model.addAttribute("roles", rolService.listarTodos());
+        return "trabajadores/editar";
+    }
+
+    @PostMapping("/{id}")
+    public String actualizar(
+            @PathVariable Long id,
+            @RequestParam String nombre,
+            @RequestParam String dni,
+            @RequestParam String telefono,
+            @RequestParam String email,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaIngreso,
+            @RequestParam String turno,
+            @RequestParam(required = false) String estado,
+            @RequestParam Long idRol
+    ) {
+        TrabajadorRequestDto dto = new TrabajadorRequestDto();
+        dto.setNombre(nombre);
+        dto.setDni(dni);
+        dto.setTelefono(telefono);
+        dto.setEmail(email);
+        dto.setFechaIngreso(fechaIngreso);
+        dto.setTurno(turno);
+        dto.setEstado(estado);
+        dto.setIdRol(idRol);
+
+        service.actualizar(id, dto);
+        return "redirect:/admin/trabajadores";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
         service.eliminar(id);
+        return "redirect:/admin/trabajadores";
     }
 }

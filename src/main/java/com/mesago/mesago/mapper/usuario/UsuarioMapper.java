@@ -33,6 +33,7 @@ public class UsuarioMapper {
                 .username(entity.getUsername())
                 .estado(entity.getEstado())
                 .idTrabajador(entity.getTrabajador().getId())
+                .nombreTrabajador(entity.getTrabajador().getNombre())
                 .build();
     }
 

@@ -12,4 +12,5 @@ public class UsuarioResponseDto {
     private String username;
     private String estado;
     private Long idTrabajador;
+    private String nombreTrabajador;
 }

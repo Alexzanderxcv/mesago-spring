@@ -55,4 +55,13 @@ public class TrabajadorServiceImpl implements TrabajadorService {
         }
         repository.deleteById(id);
     }
+
+    //EXTRAS
+    @Override
+    public List<TrabajadorResponseDto> listarSinUsuario() {
+        return repository.findTrabajadoresSinUsuario().stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

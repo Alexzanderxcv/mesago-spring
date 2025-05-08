@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+
+<head>
+</head>
+<body class="bg-light">
+<div layout:fragment="content">
+    <h2 class="mb-4 text-center">Gestión de Trabajadores</h2>
+
+    <div class="mb-3 text-end">
+        <a th:href="@{/admin/trabajadores/crear}" class="btn btn-success">+ Nuevo Trabajador</a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Fecha Ingreso</th>
+            <th>Turno</th>
+            <th>Estado</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${trabajadores}">
+            <td th:text="${t.id}"></td>
+            <td th:text="${t.nombre}"></td>
+            <td th:text="${t.dni}"></td>
+            <td th:text="${t.telefono}"></td>
+            <td th:text="${t.email}"></td>
+            <td th:text="${t.fechaIngreso}"></td>
+            <td th:text="${t.turno}"></td>
+            <td th:text="${t.estado}"></td>
+            <td th:text="${t.nombreRol}"></td>
+            <td>
+                <a th:href="@{'/admin/trabajadores/editar/' + ${t.id}}" class="btn btn-sm btn-warning">Editar</a>
+                <a th:href="@{'/admin/trabajadores/eliminar/' + ${t.id}}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('¿Seguro que deseas eliminar este trabajador?')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin}" class="btn btn-secondary mt-3">← Volver al Panel</a>
+</div>
+</body>
+</html>

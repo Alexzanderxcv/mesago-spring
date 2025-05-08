@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+
+<head>
+</head>
+<body class="bg-light">
+<div layout:fragment="content">
+  <h2 class="mb-4 text-center">Gestión de Proveedores - Insumos</h2>
+
+  <div class="mb-3 text-end">
+    <a th:href="@{/admin/proveedor-insumos/crear}" class="btn btn-success">+ Nuevo Registro</a>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead class="table-primary">
+    <tr>
+      <th>ID</th>
+      <th>Precio Unitario</th>
+      <th>Fecha Entrega</th>
+      <th>Cantidad</th>
+      <th>Proveedor</th>
+      <th>Insumo</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pi : ${proveedorInsumos}">
+      <td th:text="${pi.id}"></td>
+      <td th:text="${pi.precioUnitario}"></td>
+      <td th:text="${pi.fechaEntrega} ?: '—'"></td>
+      <td th:text="${pi.cantidad}"></td>
+      <td th:text="${pi.nombreProveedor}"></td>
+      <td th:text="${pi.nombreInsumo}"></td>
+      <td>
+        <a th:href="@{'/admin/proveedor-insumos/editar/' + ${pi.id}}" class="btn btn-sm btn-warning">Editar</a>
+        <a th:href="@{'/admin/proveedor-insumos/eliminar/' + ${pi.id}}" class="btn btn-sm btn-danger"
+           onclick="return confirm('¿Seguro que deseas eliminar este registro?')">Eliminar</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <a th:href="@{/admin}" class="btn btn-secondary mt-3">← Volver al Panel</a>
+</div>
+</body>
+</html>

@@ -64,4 +64,8 @@ public class ClienteServiceImpl implements ClienteService {
         }
         repository.deleteById(id);
     }
+    @Override
+    public long count() {
+        return repository.count();
+    }
 }

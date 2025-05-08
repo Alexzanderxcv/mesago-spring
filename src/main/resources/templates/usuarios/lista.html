@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Usuarios</title>
+</head>
+<body class="bg-light">
+<div layout:fragment="content">
+  <h2 class="mb-4 text-center">Gestión de Usuarios</h2>
+
+  <div class="mb-3 text-end">
+    <a th:href="@{/admin/usuarios/crear}" class="btn btn-success">+ Nuevo Usuario</a>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead class="table-primary">
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Trabajador</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${usuarios}">
+      <td th:text="${u.id}"></td>
+      <td th:text="${u.username}"></td>
+      <td th:text="${u.nombreTrabajador}"></td> <!-- Este campo debe venir del UsuarioResponseDto -->
+      <td th:text="${u.estado}"></td>
+      <td>
+        <a th:href="@{'/admin/usuarios/editar/' + ${u.id}}" class="btn btn-sm btn-warning">Editar</a>
+        <a th:href="@{'/admin/usuarios/eliminar/' + ${u.id}}" class="btn btn-sm btn-danger"
+           onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">Eliminar</a>
+        <form th:action="@{'/admin/usuarios/reset-password/' + ${u.id}}" method="post" style="display:inline;">
+          <button type="submit" class="btn btn-sm btn-secondary"
+                  onclick="return confirm('¿Resetear la contraseña de este usuario a \'mesa2025\'?')">
+            Resetear Contraseña
+          </button>
+        </form>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <a th:href="@{/admin}" class="btn btn-secondary mt-3">← Volver al Panel</a>
+
+</div>
+</body>
+</html>

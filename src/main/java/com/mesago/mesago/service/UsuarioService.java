@@ -14,6 +14,7 @@ public interface UsuarioService {
     List<UsuarioResponseDto> listarTodos();
 
     UsuarioResponseDto actualizar(Long id, UsuarioRequestDto dto);
+    void resetearPassword(Long id);
 
     void eliminar(Long id);
 }

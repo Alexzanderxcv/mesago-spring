@@ -1,55 +1,75 @@
 package com.mesago.mesago.controller;
 
 import com.mesago.mesago.dto.cliente.ClienteRequestDto;
-import com.mesago.mesago.dto.cliente.ClienteResponseDto;
 import com.mesago.mesago.service.ClienteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/clientes")
+@Controller
+@RequestMapping("/empleado/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
 
-    private final ClienteService service;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ClienteResponseDto crear(@Validated @RequestBody ClienteRequestDto req) {
-        return service.crear(req);
-    }
-
-    @GetMapping("/{id}")
-    public ClienteResponseDto obtener(@PathVariable Long id) {
-        return service.obtenerPorId(id);
-    }
+    private final ClienteService clienteService;
 
     @GetMapping
-    public List<ClienteResponseDto> listar() {
-        return service.listarTodos();
+    public String listar(Model model) {
+        model.addAttribute("clientes", clienteService.listarTodos());
+        return "cliente/lista";
     }
 
-    @PutMapping("/{id}")
-    public ClienteResponseDto actualizar(
-            @PathVariable Long id,
-            @Validated @RequestBody ClienteRequestDto req
+    @GetMapping("/crear")
+    public String mostrarFormularioCrear() {
+        return "cliente/crear";
+    }
+
+    @PostMapping
+    public String crear(
+            @RequestParam String nombre,
+            @RequestParam(required = false) String telefono,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String observaciones
     ) {
-        return service.actualizar(id, req);
+        ClienteRequestDto dto = new ClienteRequestDto();
+        dto.setNombre(nombre);
+        dto.setTelefono(telefono);
+        dto.setEmail(email);
+        dto.setObservaciones(observaciones);
+
+        clienteService.crear(dto);
+        return "redirect:/empleado/clientes";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    @GetMapping("/editar/{id}")
+    public String mostrarEditar(@PathVariable Long id, Model model) {
+        model.addAttribute("cliente", clienteService.obtenerPorId(id));
+        return "cliente/editar";
     }
 
-    @GetMapping("/nombre/{nombre}")
-    public ClienteResponseDto obtenerPorNombre(@PathVariable String nombre){
-        return service.obtenerPorNombre(nombre);
+    @PostMapping("/{id}")
+    public String actualizar(
+            @PathVariable Long id,
+            @RequestParam String nombre,
+            @RequestParam(required = false) String telefono,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String observaciones
+    ) {
+        ClienteRequestDto dto = new ClienteRequestDto();
+        dto.setNombre(nombre);
+        dto.setTelefono(telefono);
+        dto.setEmail(email);
+        dto.setObservaciones(observaciones);
+
+        clienteService.actualizar(id, dto);
+        return "redirect:/empleado/clientes";
     }
 
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        clienteService.eliminar(id);
+        return "redirect:/empleado/clientes";
+    }
 }
+

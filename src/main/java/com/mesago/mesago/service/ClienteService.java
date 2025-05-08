@@ -18,4 +18,7 @@ public interface ClienteService {
     ClienteResponseDto obtenerPorNombre(String nombre);
 
     void eliminar(Long id);
+
+    long count(); // ← este nuevo método
+
 }

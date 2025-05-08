@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Proveedor-Insumo | MesaGo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div layout:fragment="content">
+  <h2 class="mb-4 text-center">Editar Relación Proveedor - Insumo</h2>
+
+  <form th:action="@{'/admin/proveedor-insumos/' + ${proveedorInsumo.id}}" method="post" class="col-md-8 offset-md-2">
+
+    <div class="mb-3">
+      <label class="form-label">Precio Unitario (S/):</label>
+      <input type="number" name="precioUnitario" class="form-control"
+             th:value="${proveedorInsumo.precioUnitario}" step="0.01" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Fecha de Entrega:</label>
+      <input type="date" name="fechaEntrega" class="form-control"
+             th:value="${proveedorInsumo.fechaEntrega}">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Cantidad:</label>
+      <input type="number" name="cantidad" class="form-control"
+             th:value="${proveedorInsumo.cantidad}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Proveedor:</label>
+      <select name="idProveedor" class="form-select" required>
+        <option value="">-- Seleccione un proveedor --</option>
+        <option th:each="p : ${proveedores}"
+                th:value="${p.id}"
+                th:selected="${p.id == proveedorInsumo.idProveedor}"
+                th:text="${p.nombre}"></option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Insumo:</label>
+      <select name="idInsumo" class="form-select" required>
+        <option value="">-- Seleccione un insumo --</option>
+        <option th:each="i : ${insumos}"
+                th:value="${i.id}"
+                th:selected="${i.id == proveedorInsumo.idInsumo}"
+                th:text="${i.nombre}"></option>
+      </select>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a th:href="@{/admin/proveedor-insumos}" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Actualizar</button>
+    </div>
+
+  </form>
+</div>
+</body>
+</html>

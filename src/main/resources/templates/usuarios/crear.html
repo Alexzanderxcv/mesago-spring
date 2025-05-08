@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Usuario</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div layout:fragment="content">
+  <h2 class="mb-4 text-center">Registrar Nuevo Usuario</h2>
+  <div th:if="${mensaje}" class="alert" th:classappend="${tipoMensaje}" th:text="${mensaje}"></div>
+  <form th:action="@{/admin/usuarios}" method="post" class="col-md-8 offset-md-2">
+
+    <div class="mb-3">
+      <label class="form-label">Username:</label>
+      <input type="text" name="username" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Contraseña:</label>
+      <input type="password" name="password" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Estado:</label>
+      <select name="estado" class="form-select" required>
+        <option value="Activo">Activo</option>
+        <option value="Inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Trabajador:</label>
+      <select name="idTrabajador" class="form-select" required>
+        <option value="">-- Seleccione un trabajador --</option>
+        <option th:each="t : ${trabajadores}"
+                th:value="${t.id}"
+                th:text="${t.nombre}"></option>
+      </select>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a th:href="@{/admin/usuarios}" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+
+  </form>
+</div>
+</body>
+</html>

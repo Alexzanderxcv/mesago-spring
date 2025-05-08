@@ -3,94 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <title>Iniciar Sesión | MesaGo</title>
+    <link rel="shortcut icon" href="/img/Logo.png" type="image/x-icon">
     <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-          margin: 0;
-          padding: 0;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          height: 100vh;
-          background: linear-gradient(to right, #fffdf6, #e6f0ff);
-          display: flex;
-          justify-content: center;
-          align-items: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to right, #fff3d4, #e6f0ff);
         }
 
+        /* Contenedor principal */
         .login-container {
-          background: white;
-          padding: 2rem;
-          border-radius: 12px;
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-          width: 320px;
-          text-align: center;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+            padding: 30px;
         }
 
-        .login-container img {
-          width: 140px;
-          margin-bottom: 1rem;
+        /* Logo */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 25px;
         }
 
-        .login-container input {
-          width: 100%;
-          padding: 10px;
-          margin: 8px 0;
-          border: 1px solid #ccc;
-          border-radius: 8px;
-          font-size: 1rem;
+        .logo {
+            width: 180px;
+            height: auto;
         }
 
-        .login-container button {
-          background-color: #007bff;
-          color: white;
-          border: none;
-          padding: 10px;
-          margin-top: 10px;
-          border-radius: 8px;
-          font-size: 1rem;
-          font-weight: bold;
-          cursor: pointer;
-          transition: background-color 0.3s;
-        }
-
-        .login-container button:hover {
-          background-color: #0056b3;
-        }
-
-        .login-container .error {
-          color: red;
-          font-size: 0.9rem;
-          margin-top: 10px;
+        /* Formulario */
+        .form-group {
+            margin-bottom: 20px;
         }
 
         label {
-          display: block;
-          text-align: left;
-          margin-top: 10px;
-          font-weight: 600;
+            display: block;
+            color: #2563eb;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Botón de ingreso */
+        .login-button {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Mensajes */
+        .error-message {
+            color: #e11d48;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 20px;
+        }
+
+        .success-message {
+            color: #16a34a;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px;
+            }
+
+            .logo {
+                width: 150px;
+            }
         }
     </style>
 </head>
 <body>
 
+
+
 <div class="login-container">
-    <img src="/img/mesa.png" alt="Logo MesaGo"> <!-- Usa tu imagen aquí -->
-
-    <div th:if="${param.error}" class="error">
-        Usuario o contraseña incorrectos.
-    </div>
-    <div th:if="${param.logout}" class="error" style="color: green">
-        Sesión cerrada correctamente.
+    <div class="logo-container">
+        <img src="/img/MesaGologIN.png" alt="Logo MesaGo" class="logo">
     </div>
 
-    <form th:action="@{/login}" method="post">
-        <label for="username">Usuario:</label>
-        <input type="text" name="username" id="username" placeholder="Ingrese su usuario" autocomplete="username" required />
+    <div th:if="${param.error}" id="error-message" class="error-message"> Usuario o contraseña incorrectos. </div>
+    <div th:if="${param.logout}" id="success-message" class="success-message"> Sesión cerrada correctamente. </div>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password" id="password" placeholder="Ingrese su contraseña" autocomplete="current-password" required />
+    <form th:action="@{/login}" method="post" id="login-form">
+        <div class="form-group">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
+        </div>
 
-        <button type="submit">INGRESAR</button>
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+        </div>
+
+        <button type="submit" class="login-button">INGRESAR</button>
     </form>
-
 </div>
 
 </body>

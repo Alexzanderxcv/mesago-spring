@@ -12,4 +12,8 @@ public interface TrabajadorService {
     List<TrabajadorResponseDto> listar();
     TrabajadorResponseDto actualizar(Long id, TrabajadorRequestDto request);
     void eliminar(Long id);
+
+    //EXTRAS
+    List<TrabajadorResponseDto> listarSinUsuario();
+
 }
