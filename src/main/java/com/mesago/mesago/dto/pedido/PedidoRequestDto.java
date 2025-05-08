@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,5 +30,5 @@ public class PedidoRequestDto {
 
     private Long idCliente;
 
-    private List<DetallePedidoRequestDto> detalles;
+    private List<DetallePedidoRequestDto> detalles = new ArrayList<>();
 }

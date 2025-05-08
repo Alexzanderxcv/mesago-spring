@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments-empleado/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle del Pedido</title>
+</head>
+<body class="bg-light">
+
+<div layout:fragment="content">
+  <h2 class="mb-4 text-center text-info">🧾 Detalle del Pedido #<span th:text="${pedido.id}">0</span></h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}">2024-01-01</span></p>
+      <p><strong>Estado:</strong> <span th:text="${pedido.estado}">PENDIENTE</span></p>
+      <p><strong>Total (S/):</strong> <span th:text="${pedido.total}">0.00</span></p>
+      <p><strong>Tiempo Preparado:</strong> <span th:text="${pedido.tiempoPreparado}">0</span> min</p>
+    </div>
+  </div>
+
+  <h4 class="text-primary">🍽️ Ítems del Pedido</h4>
+  <table class="table table-striped">
+    <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Nombre del Plato</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Subtotal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="d, iter : ${detalles}">
+      <td th:text="${iter.count}">1</td>
+      <td th:text="${d.nombrePlato}">Pollo a la Brasa</td>
+      <td th:text="${d.cantidad}">2</td>
+      <td th:text="${d.precio}">18.00</td>
+      <td th:text="${d.subtotal}">36.00</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="text-end">
+    <a th:href="@{/empleado/pedidos}" class="btn btn-secondary">← Volver a Pedidos</a>
+  </div>
+</div>
+
+</body>
+</html>

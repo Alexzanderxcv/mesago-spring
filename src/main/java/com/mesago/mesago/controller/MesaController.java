@@ -1,49 +1,69 @@
 package com.mesago.mesago.controller;
 
 import com.mesago.mesago.dto.mesa.MesaRequestDto;
-import com.mesago.mesago.dto.mesa.MesaResponseDto;
 import com.mesago.mesago.service.MesaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/mesas")
+@Controller
+@RequestMapping("/empleado/mesas")
 @RequiredArgsConstructor
 public class MesaController {
 
-    private final MesaService service;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public MesaResponseDto crear(@Validated @RequestBody MesaRequestDto dto) {
-        return service.crear(dto);
-    }
-
-    @GetMapping("/{id}")
-    public MesaResponseDto obtener(@PathVariable Long id) {
-        return service.obtenerPorId(id);
-    }
+    private final MesaService mesaService;
 
     @GetMapping
-    public List<MesaResponseDto> listar() {
-        return service.listarTodas();
+    public String listar(Model model) {
+        model.addAttribute("mesas", mesaService.listarTodas());
+        return "mesa/lista";
     }
 
-    @PutMapping("/{id}")
-    public MesaResponseDto actualizar(
-            @PathVariable Long id,
-            @Validated @RequestBody MesaRequestDto dto
-    ) {
-        return service.actualizar(id, dto);
+    @GetMapping("/crear")
+    public String mostrarFormularioCrear() {
+        return "mesa/crear";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    @PostMapping
+    public String crear(@RequestParam Integer numero,
+                        @RequestParam Integer capacidad,
+                        @RequestParam(required = false) String estado) {
+
+        MesaRequestDto dto = new MesaRequestDto();
+        dto.setNumero(numero);
+        dto.setCapacidad(capacidad);
+        dto.setEstado(estado);
+
+        mesaService.crear(dto);
+        return "redirect:/empleado/mesas";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarEditar(@PathVariable Long id, Model model) {
+        model.addAttribute("mesa", mesaService.obtenerPorId(id));
+        return "mesa/editar";
+    }
+
+    @PostMapping("/{id}")
+    public String actualizar(@PathVariable Long id,
+                             @RequestParam Integer numero,
+                             @RequestParam Integer capacidad,
+                             @RequestParam(required = false) String estado) {
+
+        MesaRequestDto dto = new MesaRequestDto();
+        dto.setNumero(numero);
+        dto.setCapacidad(capacidad);
+        dto.setEstado(estado);
+
+        mesaService.actualizar(id, dto);
+        return "redirect:/empleado/mesas";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        mesaService.eliminar(id);
+        return "redirect:/empleado/mesas";
     }
 }

@@ -19,4 +19,5 @@ public class DetallePedidoResponseDto {
     private Integer cantidad;
     private BigDecimal precioUnitario;
     private BigDecimal subTotal;
+    private String menuNombre;
 }

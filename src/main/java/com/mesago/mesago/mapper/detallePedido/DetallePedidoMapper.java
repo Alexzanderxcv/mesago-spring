@@ -26,8 +26,10 @@ public class DetallePedidoMapper {
                 .cantidad(entity.getCantidad())
                 .precioUnitario(entity.getPrecioUnitario())
                 .subTotal(entity.getSubTotal())
+                .menuNombre(entity.getMenu().getNombre()) // ✅ ESTA LÍNEA AGREGA EL NOMBRE DEL PLATO
                 .build();
     }
+
 
     public DetallePedido toEntity(DetallePedidoRequestDto dto) {
         if (dto == null) {

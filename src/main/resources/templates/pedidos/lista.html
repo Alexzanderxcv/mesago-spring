@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments-empleado/layout}">
+
+<head></head>
+<body class="bg-light">
+
+<div layout:fragment="content">
+
+  <h2 class="mb-4 text-center text-primary">
+    🧾 Pedidos Realizados
+    <span class="badge bg-secondary" th:text="${pedidos.size()}">0</span>
+  </h2>
+
+  <div class="mb-3 text-end">
+    <a th:href="@{/empleado/pedidos/crear}" class="btn btn-outline-success">
+      <i class="bi bi-plus-circle"></i> Nuevo Pedido
+    </a>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col" th:each="p : ${pedidos}">
+      <div class="card h-100 shadow-sm border-primary border-2 rounded-4">
+        <div class="card-body">
+          <h5 class="card-title">Pedido <span th:text="${p.id}">#</span></h5>
+          <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(p.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</h6>
+          <p class="card-text">
+            <strong>Estado:</strong> <span th:text="${p.estado}">Pendiente</span><br>
+            <strong>Total:</strong> S/ <span th:text="${p.total}">0.00</span><br>
+            <strong>Tiempo Preparación:</strong> <span th:text="${p.tiempoPreparado}">--</span> min
+          </p>
+
+          <div>
+            <strong>🧾 Detalles del Pedido:</strong>
+            <ul class="mt-2" th:if="${detallePedidosMap[p.id]?.size() > 0}">
+              <li th:each="detalle : ${detallePedidosMap[p.id]}" class="small">
+                <span th:text="${detalle.cantidad}">1</span>x
+                <span th:text="${detalle.menuNombre}">Plato</span>
+                — S/ <span th:text="${detalle.subTotal}">0.00</span>
+              </li>
+            </ul>
+            <p class="text-muted" th:if="${detallePedidosMap[p.id]?.size() == 0}">
+              No hay detalles registrados para este pedido.
+            </p>
+          </div>
+        </div>
+
+        <div class="card-footer text-end">
+          <a th:href="@{'/empleado/pedidos/editar/' + ${p.id}}" class="btn btn-sm btn-outline-primary me-1">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <a th:href="@{'/empleado/pedidos/eliminar/' + ${p.id}}" class="btn btn-sm btn-outline-danger"
+             onclick="return confirm('¿Eliminar pedido?')">
+            <i class="bi bi-trash3"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a th:href="@{/empleado}" class="btn btn-secondary mt-4">← Volver al Panel</a>
+
+</div>
+
+</body>
+</html>

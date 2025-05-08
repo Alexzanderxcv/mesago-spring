@@ -16,4 +16,7 @@ public interface DetallePedidoService {
     DetallePedidoResponseDto actualizar(Long id, DetallePedidoRequestDto request);
 
     void eliminar(Long id);
+
+    List<DetallePedidoResponseDto> listarPorPedido(Long idPedido);
+
 }

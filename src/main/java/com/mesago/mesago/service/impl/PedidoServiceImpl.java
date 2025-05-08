@@ -48,23 +48,27 @@ public class PedidoServiceImpl implements PedidoService {
 
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
-        List<DetallePedido> detalles = request.getDetalles().stream().map(detalleDto -> {
-            Menu menu = menuRepository.findById(detalleDto.getIdMenu())
-                    .orElseThrow(() -> new EntityNotFoundException("Menu no encontrado: " + detalleDto.getIdMenu()));
+        // ⚠️ Verificamos si hay detalles para agregar
+        if (request.getDetalles() != null && !request.getDetalles().isEmpty()) {
+            List<DetallePedido> detalles = request.getDetalles().stream().map(detalleDto -> {
+                Menu menu = menuRepository.findById(detalleDto.getIdMenu())
+                        .orElseThrow(() -> new EntityNotFoundException("Menu no encontrado: " + detalleDto.getIdMenu()));
 
-            return DetallePedido.builder()
-                    .pedido(pedidoGuardado)
-                    .menu(menu)
-                    .cantidad(detalleDto.getCantidad())
-                    .precioUnitario(detalleDto.getPrecioUnitario())
-                    .subTotal(detalleDto.getSubTotal())
-                    .build();
-        }).collect(Collectors.toList());
+                return DetallePedido.builder()
+                        .pedido(pedidoGuardado)
+                        .menu(menu)
+                        .cantidad(detalleDto.getCantidad())
+                        .precioUnitario(detalleDto.getPrecioUnitario())
+                        .subTotal(detalleDto.getSubTotal())
+                        .build();
+            }).collect(Collectors.toList());
 
-        detallePedidoRepository.saveAll(detalles);
+            detallePedidoRepository.saveAll(detalles);
+        }
 
         return pedidoMapper.toResponseDto(pedidoGuardado);
     }
+
 
     @Override
     public PedidoResponseDto obtenerPorId(Long id) {

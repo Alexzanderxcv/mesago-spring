@@ -58,4 +58,13 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
         repository.deleteById(id);
     }
 
+    @Override
+    public List<DetallePedidoResponseDto> listarPorPedido(Long idPedido) {
+        return repository.findByPedidoId(idPedido)
+                .stream()
+                .map(mapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+
 }

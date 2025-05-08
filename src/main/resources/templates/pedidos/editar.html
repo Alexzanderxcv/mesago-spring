@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments-empleado/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Pedido | MesaGo</title>
+</head>
+<body class="bg-light">
+<div layout:fragment="content">
+
+  <h2 class="mb-4 text-center text-primary">Editar Pedido</h2>
+
+  <form th:action="@{'/empleado/pedidos/' + ${pedido.id}}" method="post" class="col-md-8 offset-md-2">
+
+    <div class="mb-3">
+      <label class="form-label">Estado:</label>
+      <select name="estado" class="form-select" required>
+        <option value="PENDIENTE" th:selected="${pedido.estado == 'PENDIENTE'}">PENDIENTE</option>
+        <option value="ENTREGADO" th:selected="${pedido.estado == 'ENTREGADO'}">ENTREGADO</option>
+        <option value="CANCELADO" th:selected="${pedido.estado == 'CANCELADO'}">CANCELADO</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Total (S/):</label>
+      <input type="number" name="total" step="0.01" class="form-control" th:value="${pedido.total}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Tiempo de Preparación (minutos):</label>
+      <input type="number" name="tiempoPreparado" class="form-control" th:value="${pedido.tiempoPreparado}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Trabajador:</label>
+      <select name="idTrabajador" class="form-select" required>
+        <option th:each="t : ${trabajadores}"
+                th:value="${t.id}"
+                th:text="${t.nombre}"
+                th:selected="${t.id == pedido.idTrabajador}">
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Mesa:</label>
+      <select name="idMesa" class="form-select" required>
+        <option th:each="m : ${mesas}"
+                th:value="${m.id}"
+                th:text="'Mesa N° ' + ${m.numero}"
+                th:selected="${m.id == pedido.idMesa}">
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Cliente:</label>
+      <select name="idCliente" class="form-select" required>
+        <option th:each="c : ${clientes}"
+                th:value="${c.id}"
+                th:text="${c.nombre}"
+                th:selected="${c.id == pedido.idCliente}">
+        </option>
+      </select>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a th:href="@{/empleado/pedidos}" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Actualizar Pedido</button>
+    </div>
+
+  </form>
+
+</div>
+</body>
+</html>
