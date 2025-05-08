@@ -1,11 +1,21 @@
 package com.mesago.mesago.controller;
 
+import com.mesago.mesago.service.InsumoService;
+import com.mesago.mesago.service.MenuService;
+import com.mesago.mesago.service.ProveedorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@RequiredArgsConstructor
+
 public class LoginController {
+
+    private final InsumoService insumoService;
+    private final ProveedorService proveedorService;
+    private final MenuService menuService;
 
     @GetMapping("/login")
     public String mostrarLoginForm() {
@@ -15,7 +25,12 @@ public class LoginController {
     @GetMapping("/admin")
     public String mostrarVistaAdmin(Model model) {
         model.addAttribute("title", "Panel de Administración");
-        return "admin"; // Renderiza admin.html
+
+        model.addAttribute("totalInsumos", insumoService.count());
+        model.addAttribute("totalProveedores", proveedorService.count());
+        model.addAttribute("totalPlatos", menuService.count());
+
+        return "admin";
     }
 
     @GetMapping("/empleado")

@@ -2,7 +2,6 @@ package com.mesago.mesago.service.impl;
 
 import com.mesago.mesago.dto.menu.MenuRequestDto;
 import com.mesago.mesago.dto.menu.MenuResponseDto;
-import com.mesago.mesago.entity.Cliente;
 import com.mesago.mesago.entity.Menu;
 import com.mesago.mesago.mapper.menu.MenuMapper;
 import com.mesago.mesago.repository.MenuRepository;
@@ -64,5 +63,10 @@ public class MenuServiceImpl implements MenuService {
             throw new EntityNotFoundException("Menú no encontrado: " + id);
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    public long count() {
+        return repository.count();
     }
 }

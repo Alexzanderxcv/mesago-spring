@@ -50,4 +50,9 @@ public class InsumoServiceImpl implements InsumoService {
     public void eliminar(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public long count() {
+        return repository.count();
+    }
 }

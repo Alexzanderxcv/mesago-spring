@@ -13,4 +13,6 @@ public interface ProveedorService {
     ProveedorResponseDto actualizar(Long id, ProveedorRequestDto dto);
     Page<ProveedorResponseDto> listar(Pageable pageable);
     void eliminar(Long id);
+    long count(); // ← este nuevo método
+
 }

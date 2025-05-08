@@ -11,4 +11,6 @@ public interface InsumoService {
     InsumoResponseDto obtenerPorId(Long id);
     InsumoResponseDto actualizar(Long id, InsumoRequestDto dto);
     void eliminar(Long id);
+    long count(); // ← este nuevo método
+
 }

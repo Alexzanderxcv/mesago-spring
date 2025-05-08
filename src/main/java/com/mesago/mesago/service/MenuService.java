@@ -13,4 +13,6 @@ public interface MenuService {
     MenuResponseDto actualizar(Long id, MenuRequestDto dto);
     List<MenuResponseDto> obtenerPorCategoria(String nombre);
     void eliminar(Long id);
+    long count(); // ← este nuevo método
+
 }
